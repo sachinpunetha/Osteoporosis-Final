@@ -15,7 +15,8 @@ from api_routes import api_bp
 app = Flask(__name__, static_folder='../frontend/dist', static_url_path='/')
 # Enable CORS, defaulting to all origins unless FRONTEND_URL is set in the environment
 frontend_url = os.environ.get('FRONTEND_URL', '*')
-CORS(app, resources={r"/*": {"origins": frontend_url}})
+allowed_origins = [frontend_url, 'http://localhost:5173', 'http://127.0.0.1:5173'] if frontend_url != '*' else '*'
+CORS(app, resources={r"/*": {"origins": allowed_origins}})
 
 # Database Configuration (Neon PostgreSQL)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://neondb_owner:npg_wD8dZUqJu4vH@ep-broad-dream-ao9mlt4w.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require'
