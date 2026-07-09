@@ -596,6 +596,7 @@ def analyze_xray():
             "prediction": final_prediction,
             "confidence": percentage,
             "dl_prediction": dl_prediction_label,
+            "pdf_url": f"/reports/report_{patient_id}.pdf",
             "message": "X-Ray analyzed successfully"
         })
     except Exception as e:

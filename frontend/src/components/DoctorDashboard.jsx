@@ -215,7 +215,13 @@ const DoctorDashboard = () => {
       }
       
       if(res.ok) {
-        toast.success(`X-Ray analyzed: ${data.prediction} (${data.confidence}% confidence)`);
+        setPredictionResult({
+           type: 'X-Ray & ML Fusion',
+           prediction: data.prediction,
+           confidence: data.confidence,
+           dl_prediction: data.dl_prediction,
+           pdf_url: data.pdf_url
+        });
         fetchPatients();
         setSelectedPatient(prev => ({ ...prev, request: null, final_prediction: data.prediction }));
         setStats(null);
