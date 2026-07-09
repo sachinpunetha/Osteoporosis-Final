@@ -111,16 +111,22 @@ const AdminDashboard = () => {
               e.preventDefault();
               const formData = new FormData(e.target);
               try {
-                await fetch(`${BASE_URL}/auth/register`, {
+                const res = await fetch(`${BASE_URL}/auth/register`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(Object.fromEntries(formData))
                 });
-                e.target.reset();
-                fetchUsers();
-                alert('User created successfully!');
+                const data = await res.json();
+                
+                if (data.status === 'success') {
+                  e.target.reset();
+                  fetchUsers();
+                  alert('User created successfully!');
+                } else {
+                  alert(data.message || 'Failed to create user.');
+                }
               } catch (err) {
-                alert('Failed to create user.');
+                alert('Failed to create user. Network error.');
               }
             }}>
               <input type="text" name="name" placeholder="Full Name" required className="w-full input-glass py-2" />

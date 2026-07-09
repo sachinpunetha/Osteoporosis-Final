@@ -63,7 +63,10 @@ def register():
     role = data.get('role', 'Patient')
     
     if User.query.filter_by(email=email).first():
-        return jsonify({"status": "error", "message": "Email already exists"}), 400
+        return jsonify({"status": "error", "message": "Email already exists. Please choose a different email."}), 400
+        
+    if User.query.filter_by(name=name).first():
+        return jsonify({"status": "error", "message": "Username already exists. Please choose a different username."}), 400
         
     new_user = User(name=name, email=email, role=role)
     new_user.set_password(password)
