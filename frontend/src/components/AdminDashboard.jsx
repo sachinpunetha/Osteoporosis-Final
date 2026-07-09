@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, Database, Server, Users, ActivitySquare, Trash2, LogOut } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { BASE_URL } from '../utils/api';
 
 const AdminDashboard = () => {
@@ -38,11 +39,12 @@ const AdminDashboard = () => {
       });
       if(res.ok) {
         setUsers(users.filter(u => u.id !== userId));
+        toast.success(`Removed user ${name}`);
       } else {
-        alert("Failed to remove user");
+        toast.error("Failed to remove user");
       }
     } catch(err) {
-      alert("Error removing user");
+      toast.error("Error removing user");
     }
   };
 
@@ -67,11 +69,13 @@ const AdminDashboard = () => {
         body: JSON.stringify({ patient_id: patientId, doctor_id: doctorId })
       });
       if(res.ok) {
-        alert('Doctor assigned successfully');
+        toast.success('Doctor assigned successfully');
         fetchAssignments();
+      } else {
+        toast.error('Failed to assign doctor');
       }
     } catch (err) {
-      alert('Failed to assign doctor');
+      toast.error('Failed to assign doctor');
     }
   };
 
@@ -121,12 +125,12 @@ const AdminDashboard = () => {
                 if (data.status === 'success') {
                   e.target.reset();
                   fetchUsers();
-                  alert('User created successfully!');
+                  toast.success('User created successfully!');
                 } else {
-                  alert(data.message || 'Failed to create user.');
+                  toast.error(data.message || 'Failed to create user.');
                 }
               } catch (err) {
-                alert('Failed to create user. Network error.');
+                toast.error('Failed to create user. Network error.');
               }
             }}>
               <input type="text" name="name" placeholder="Full Name" required className="w-full input-glass py-2" />

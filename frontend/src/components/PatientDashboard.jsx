@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, AlertCircle, FileText, Pill, Calendar, LogOut, MessageSquare } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { BASE_URL } from '../utils/api';
 
 const PatientDashboard = () => {
@@ -72,17 +73,25 @@ const PatientDashboard = () => {
       const data = await res.json();
       if(data.status === 'success') {
         setIsRetaking(false);
+        toast.success('Assessment submitted successfully!');
         await fetchProfile();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch(err) {
-      alert('Submission failed');
+      toast.error('Submission failed');
     }
     setLoading(false);
   };
 
-  if (loading) return <div className="min-h-screen bg-slate-50 text-slate-800 flex items-center justify-center">Loading...</div>;
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4 animate-pulse">
+        <Activity className="text-teal-500 w-12 h-12 animate-bounce" />
+        <p className="text-slate-500 font-medium">Loading your portal...</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">

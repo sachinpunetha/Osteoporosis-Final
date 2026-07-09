@@ -45,7 +45,7 @@ export default function LoginScreen() {
             <span className="text-white font-bold text-xl">OsteoCare</span>
           </div>
           <h2 className="text-4xl font-bold text-white leading-tight">Advanced Bone<br />Health Platform</h2>
-          <p className="text-primary-200 mt-4 text-base leading-relaxed">AI-powered osteoporosis prediction system for modern hospital workflows.</p>
+          <p className="text-primary-200 mt-4 text-base leading-relaxed">Catch osteoporosis before the fracture does.</p>
         </div>
 
         <div className="relative z-10 space-y-4">

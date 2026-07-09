@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, Activity, FileText, CheckCircle2, X, BrainCircuit, BarChart3, ShieldCheck, AlertTriangle, Loader2, ScanFace, Database, Calendar, LogOut, TrendingUp, Heart, Bone, Clock, Filter, ChevronDown, ChevronUp, UploadCloud, Image } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 import { BASE_URL } from '../utils/api';
+import toast from 'react-hot-toast';
 
 const DoctorDashboard = () => {
   const [patients, setPatients] = useState([]);
@@ -137,7 +138,7 @@ const DoctorDashboard = () => {
         setPrescription('');
       }
     } catch(err) {
-      alert("Error saving action");
+      toast.error("Error saving action");
     }
   };
 
@@ -174,17 +175,17 @@ const DoctorDashboard = () => {
         setSelectedPatient(null);
         fetchPatients();
       } else {
-        alert(`Error: ${data.message}`);
+        toast.error(`Error: ${data.message}`);
       }
-    } catch(err) {
+    } catch (err) {
       setIsProcessing(false);
-      alert(`Prediction failed: ${err.message}`);
+      toast.error(`Prediction failed: ${err.message}`);
     }
   };
 
   const handlePredictXray = async () => {
-    if (!xrayFile) {
-      alert("Please select an X-Ray image first.");
+    if(!xrayFile) {
+      toast.error("Please select an X-Ray image first.");
       return;
     }
     setIsProcessing(true);
@@ -209,11 +210,10 @@ const DoctorDashboard = () => {
         setStats(null);
         fetchStats();
       } else {
-        alert(data.message || 'Error analyzing X-Ray');
+        toast.error(data.message || 'Error analyzing X-Ray');
       }
     } catch(err) {
-      console.error(err);
-      alert("Connection error");
+      toast.error("Connection error");
     }
     setIsProcessing(false);
     setXrayFile(null);

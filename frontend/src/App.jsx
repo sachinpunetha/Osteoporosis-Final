@@ -7,6 +7,7 @@ import PatientDashboard from './components/PatientDashboard';
 import DoctorDashboard from './components/DoctorDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import { getSession } from './utils/api';
+import { Toaster } from 'react-hot-toast';
 import './index.css';
 
 function ProtectedRoute({ children, allowedRoles }) {
@@ -39,9 +40,11 @@ export default function App() {
   if (showSplash) return <SplashScreen />;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<RoleRedirect />} />
+    <>
+      <Toaster position="top-center" toastOptions={{ className: 'font-medium text-sm rounded-xl shadow-lg' }} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<RoleRedirect />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/signup" element={<SignUpScreen />} />
         <Route path="/patient/*" element={
@@ -62,5 +65,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
