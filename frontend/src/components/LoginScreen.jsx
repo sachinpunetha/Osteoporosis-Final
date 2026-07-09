@@ -136,16 +136,16 @@ export default function LoginScreen() {
 
         </div>
       </div>
-      {/* Chatbot */}
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end">
-        <div className="mb-4 mr-2 relative animate-bounce">
-          <div className="bg-white px-4 py-2 rounded-2xl shadow-lg border border-teal-100 text-teal-800 font-bold text-sm">
+      {/* Chatbot Tooltip & Embed */}
+      <div className="fixed bottom-[90px] right-[28px] z-50 animate-bounce pointer-events-none">
+        <div className="relative">
+          <div className="bg-white px-4 py-2 rounded-2xl shadow-lg border border-teal-100 text-teal-800 font-bold text-sm whitespace-nowrap">
             Ask me anything!
           </div>
           <div className="absolute -bottom-2 right-4 w-4 h-4 bg-white border-b border-r border-teal-100 rotate-45 shadow-sm rounded-br-sm"></div>
         </div>
-        <zapier-interfaces-chatbot-embed is-popup="true" default-open="false" chatbot-id="cmr8uxrg5002tkpepo5u4omgi"></zapier-interfaces-chatbot-embed>
       </div>
+      <zapier-interfaces-chatbot-embed is-popup="true" default-open="false" chatbot-id="cmr8uxrg5002tkpepo5u4omgi"></zapier-interfaces-chatbot-embed>
     </div>
   );
 }
