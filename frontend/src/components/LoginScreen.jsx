@@ -145,7 +145,7 @@ export default function LoginScreen() {
           <div className="absolute -bottom-2 right-4 w-4 h-4 bg-white border-b border-r border-teal-100 rotate-45 shadow-sm rounded-br-sm"></div>
         </div>
       </div>
-      <zapier-interfaces-chatbot-embed is-popup="true" default-open="false" chatbot-id="cmr8uxrg5002tkpepo5u4omgi"></zapier-interfaces-chatbot-embed>
+      <zapier-interfaces-chatbot-embed is-popup="true" chatbot-id="cmr8uxrg5002tkpepo5u4omgi"></zapier-interfaces-chatbot-embed>
     </div>
   );
 }
