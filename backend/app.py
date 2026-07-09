@@ -67,11 +67,7 @@ try:
 except Exception as e:
     print(f"WARNING: With-DEXA model failed to load: {e}")
 
-try:
-    model_without_dexa = joblib.load(without_dexa_path)
-    print("SUCCESS: Without-DEXA Model Loaded")
-except Exception as e:
-    print(f"WARNING: Without-DEXA model failed to load: {e}")
+# Without-DEXA model loading removed per user request
 
 # --- HEALTH CHECK ROUTE ---
 @app.route('/health', methods=['GET'])
@@ -131,33 +127,8 @@ def submit_questionnaire():
         doctors = User.query.filter_by(role='Doctor').all()
         assigned_doctor_id = random.choice(doctors).id if doctors else None
         
-        # Build DataFrame for Without DEXA Model
-        import pandas as pd
-        patient_data = {
-            "Age": int(data.get('Age', 0)),
-            "Gender": data.get('Gender', 'Unknown'),
-            "Hormonal_Changes": data.get('Hormonal_Changes', 'Normal'),
-            "Family_History": data.get('Family_History', 'No'),
-            "Race/Ethnicity": data.get('Race_Ethnicity', 'Caucasian'),
-            "Body_Weight": data.get('Body_Weight', 'Normal'),
-            "Calcium_Intake": data.get('Calcium_Intake', 'Adequate'),
-            "Vitamin_D_Intake": data.get('Vitamin_D_Intake', 'Sufficient'),
-            "Physical_Activity": data.get('Physical_Activity', 'Active'),
-            "Smoking": data.get('Smoking', 'No'),
-            "Alcohol_Consumption": data.get('Alcohol_Consumption', 'None'),
-            "Medical_Conditions": data.get('Medical_Conditions', 'None'),
-            "Medications": data.get('Medications', 'None'),
-            "Prior_Fractures": data.get('Prior_Fractures', 'No'),
-        }
-        df_nodexa = pd.DataFrame([patient_data])
-        
-        # Predict Without DEXA
-        try:
-            pred = model_without_dexa.predict(df_nodexa)[0]
-            initial_prediction = "High Risk" if pred == 1 else "Low Risk"
-        except Exception as e:
-            print("Error predicting nodexa:", e)
-            initial_prediction = "Unknown Risk"
+        # Prediction removed per request
+        initial_prediction = "Pending AI Analysis"
             
         profile.age = int(data.get('Age', 0))
         profile.gender = data.get('Gender', 'Unknown')
@@ -539,30 +510,8 @@ def analyze_xray():
         # Map to a risk score between 0 and 1
         dl_risk_score = dl_probs[2] + (dl_probs[1] * 0.5) 
         
-        # --- 2. Get ML Model (Without DEXA) Probability ---
-        patient_data = {
-            "Age": int(patient.age or 0),
-            "Gender": patient.gender or 'Unknown',
-            "Hormonal_Changes": patient.hormonal_changes or 'Normal',
-            "Family_History": patient.family_history or 'No',
-            "Race/Ethnicity": patient.race_ethnicity or 'Caucasian',
-            "Body_Weight": patient.body_weight or 'Normal',
-            "Calcium_Intake": patient.calcium_intake or 'Adequate',
-            "Vitamin_D_Intake": patient.vitamin_d_intake or 'Sufficient',
-            "Physical_Activity": patient.physical_activity or 'Active',
-            "Smoking": patient.smoking or 'No',
-            "Alcohol_Consumption": patient.alcohol_consumption or 'None',
-            "Medical_Conditions": patient.medical_conditions or 'None',
-            "Medications": patient.medications or 'None',
-            "Prior_Fractures": patient.prior_fractures or 'No',
-        }
-        df_nodexa = pd.DataFrame([patient_data])
-        
-        ml_probs = model_without_dexa.predict_proba(df_nodexa)[0]
-        ml_risk_score = ml_probs[1] # Probability of class 1 (High Risk)
-        
-        # --- 3. Average Predictions ---
-        final_prob = (dl_risk_score + ml_risk_score) / 2.0
+        # ML model (Without DEXA) has been removed, so prediction is purely DL based
+        final_prob = dl_risk_score
         final_prediction = "High Risk" if final_prob > 0.5 else "Low Risk"
         percentage = round(final_prob * 100, 2)
         
@@ -575,7 +524,7 @@ def analyze_xray():
             
         # Update Patient Profile
         patient.xray_risk_score = float(dl_risk_score)
-        patient.clinical_risk_score = float(ml_risk_score)
+        patient.clinical_risk_score = float(dl_risk_score) # Mirrored for backwards compatibility
         patient.final_prediction = final_prediction
         patient.doctor_request = None
         db.session.commit()
